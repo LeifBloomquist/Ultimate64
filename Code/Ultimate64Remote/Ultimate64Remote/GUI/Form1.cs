@@ -24,7 +24,7 @@ namespace Ultimate64Test
                 var result = MessageBox.Show("Reset Ultimate 64, are you sure?", "Confirmation", MessageBoxButtons.OKCancel);
                 if (result == DialogResult.Cancel) return;
             }
-            Ultimate64Tools.SendReset(cfg);
+            Ultimate64Commands.SendReset(cfg);
         }
 
         private void bSendString_Click(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace Ultimate64Test
                 text += "\r";
             }
 
-            Ultimate64Tools.SendKeyboardString(cfg, text);
+            Ultimate64Commands.SendKeyboardString(cfg, text);
         }
 
         private void tbKeyboardZone_KeyPress(object sender, KeyPressEventArgs e)
@@ -58,7 +58,7 @@ namespace Ultimate64Test
             }
 
             String key = new string(c, 1);            
-            Ultimate64Tools.SendKeyboardString(cfg, key);
+            Ultimate64Commands.SendKeyboardString(cfg, key);
             e.Handled = true;
 
             tbKeyboardZone.Text = key;
@@ -137,7 +137,7 @@ namespace Ultimate64Test
                     return;  // Don't send anything, key may be handled by _KeyPress 
             }
 
-            Ultimate64Tools.SendKeyboardKey(cfg, key);
+            Ultimate64Commands.SendKeyboardKey(cfg, key);
             e.Handled = true;
 
             tbKeyboardZone.Text = "";
@@ -145,7 +145,7 @@ namespace Ultimate64Test
 
         private void bReadMemory_Click(object sender, EventArgs e)
         {
-            byte[] buffer = Ultimate64Tools.ReadMemory(cfg);
+            byte[] buffer = Ultimate64Commands.ReadMemory(cfg);
             File.WriteAllBytes("c:\\Leif\\u64mem.bin", buffer);    // Not sure what this file actually is??  TODO, prompt for filename and make it a config item
             MessageBox.Show("Memory Dump Complete!");
         }
@@ -164,7 +164,7 @@ namespace Ultimate64Test
                 vals.Add(byte.Parse(p));
             }
 
-            Ultimate64Tools.WriteMemory(cfg, address, vals.ToArray());
+            Ultimate64Commands.WriteMemory(cfg, address, vals.ToArray());
         }
 
         private void cbCommonCommands_SelectedIndexChanged(object sender, EventArgs e)
@@ -176,6 +176,44 @@ namespace Ultimate64Test
         {
             cfg.Hostname = tbIPAddress.Text;
             cfg.Save();
+        }
+
+        byte[] binary = null;
+
+        private void bSelectFile_Click(object sender, EventArgs e)
+        {
+            binary = Utilities.SelectandReadBinaryFile(cfg.LastPath);
+
+            if (binary != null)
+            {
+                cfg.LastPath = Path.GetDirectoryName(Utilities.LastPathFileName);
+                cfg.Save();
+
+                lFileName.Text = Path.GetFileName(Utilities.LastPathFileName);
+                lLoadAddress.Text = ((binary[1] * 256) + binary[0]).ToString();
+                lDataSize.Text = (binary.Length - 2).ToString();
+            }            
+        }
+
+        private void bLoadRun_Click(object sender, EventArgs e)
+        {
+            if (binary == null) return;
+
+            Ultimate64Commands.SendRamAndRun(cfg, binary);
+        }
+
+        private void bLoadMemory_Click(object sender, EventArgs e)
+        {
+            if (binary == null) return;
+
+            Ultimate64Commands.WriteMemoryWithAddress(cfg, binary);
+        }
+
+        private void bLoadJump_Click(object sender, EventArgs e)
+        {
+            if (binary == null) return;
+
+            Ultimate64Commands.SendRamAndJump(cfg, binary);
         }
     }
 }

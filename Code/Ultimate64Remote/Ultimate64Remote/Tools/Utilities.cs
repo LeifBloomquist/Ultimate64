@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Collections;
 using System.Text;
-using System.Drawing;
 using System.Threading;
-using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace SchemaFactor
 {
@@ -838,6 +838,34 @@ namespace SchemaFactor
                 if (k == len) return i;
             }
             return -1;
+        }
+
+        public static string LastPathFileName { get; private set; }
+
+        public static byte[] SelectandReadBinaryFile(string path)
+        {
+            OpenFileDialog theDialog = new OpenFileDialog();
+            theDialog.Title = "Open PRG File";
+            theDialog.Filter = "PRG files|*.prg";
+            theDialog.InitialDirectory = path;
+
+            if (theDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    LastPathFileName = theDialog.FileName;
+                    return File.ReadAllBytes(theDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

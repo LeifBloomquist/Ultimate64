@@ -52,6 +52,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.bSaveConfig = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.bLoadMemory = new System.Windows.Forms.Button();
+            this.lLoadAddress = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lFileName = new System.Windows.Forms.Label();
+            this.bSelectFile = new System.Windows.Forms.Button();
+            this.bLoadJump = new System.Windows.Forms.Button();
+            this.bLoadRun = new System.Windows.Forms.Button();
+            this.lDataSize = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -59,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.udAddress)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // bReset
@@ -124,7 +135,7 @@
             this.groupBox1.Controls.Add(this.cbConfirmReset);
             this.groupBox1.Controls.Add(this.bReset);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(564, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(168, 166);
             this.groupBox1.TabIndex = 5;
@@ -147,7 +158,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.tbKeyboardZone);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(186, 12);
+            this.groupBox2.Location = new System.Drawing.Point(192, 195);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(168, 166);
             this.groupBox2.TabIndex = 6;
@@ -169,7 +180,7 @@
             this.groupBox3.Controls.Add(this.tbCommand);
             this.groupBox3.Controls.Add(this.bSendString);
             this.groupBox3.ForeColor = System.Drawing.Color.White;
-            this.groupBox3.Location = new System.Drawing.Point(360, 12);
+            this.groupBox3.Location = new System.Drawing.Point(192, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(168, 166);
             this.groupBox3.TabIndex = 7;
@@ -220,7 +231,7 @@
             this.groupBox4.Controls.Add(this.tbValues);
             this.groupBox4.Controls.Add(this.bWriteMemory);
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(534, 12);
+            this.groupBox4.Location = new System.Drawing.Point(377, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(168, 166);
             this.groupBox4.TabIndex = 8;
@@ -274,7 +285,7 @@
             this.groupBox5.Controls.Add(this.bReadMemory);
             this.groupBox5.Enabled = false;
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(708, 12);
+            this.groupBox5.Location = new System.Drawing.Point(377, 195);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(168, 166);
             this.groupBox5.TabIndex = 11;
@@ -287,7 +298,7 @@
             this.groupBox6.Controls.Add(this.label4);
             this.groupBox6.Controls.Add(this.bSaveConfig);
             this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(882, 12);
+            this.groupBox6.Location = new System.Drawing.Point(564, 195);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(168, 166);
             this.groupBox6.TabIndex = 10;
@@ -324,22 +335,144 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 187);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 378);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1068, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(749, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.lDataSize);
+            this.groupBox7.Controls.Add(this.label7);
+            this.groupBox7.Controls.Add(this.bLoadJump);
+            this.groupBox7.Controls.Add(this.bLoadRun);
+            this.groupBox7.Controls.Add(this.bLoadMemory);
+            this.groupBox7.Controls.Add(this.lLoadAddress);
+            this.groupBox7.Controls.Add(this.label5);
+            this.groupBox7.Controls.Add(this.lFileName);
+            this.groupBox7.Controls.Add(this.bSelectFile);
+            this.groupBox7.ForeColor = System.Drawing.Color.White;
+            this.groupBox7.Location = new System.Drawing.Point(12, 12);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(168, 349);
+            this.groupBox7.TabIndex = 13;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Remote Load and Execute";
+            // 
+            // bLoadMemory
+            // 
+            this.bLoadMemory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bLoadMemory.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.bLoadMemory.Location = new System.Drawing.Point(6, 155);
+            this.bLoadMemory.Name = "bLoadMemory";
+            this.bLoadMemory.Size = new System.Drawing.Size(154, 57);
+            this.bLoadMemory.TabIndex = 15;
+            this.bLoadMemory.Text = "Load";
+            this.bLoadMemory.UseVisualStyleBackColor = true;
+            this.bLoadMemory.Click += new System.EventHandler(this.bLoadMemory_Click);
+            // 
+            // lLoadAddress
+            // 
+            this.lLoadAddress.BackColor = System.Drawing.Color.RoyalBlue;
+            this.lLoadAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lLoadAddress.ForeColor = System.Drawing.Color.White;
+            this.lLoadAddress.Location = new System.Drawing.Point(94, 74);
+            this.lLoadAddress.Name = "lLoadAddress";
+            this.lLoadAddress.Size = new System.Drawing.Size(68, 23);
+            this.lLoadAddress.TabIndex = 13;
+            this.lLoadAddress.Text = "--";
+            this.lLoadAddress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(6, 75);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(94, 20);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Load Address:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lFileName
+            // 
+            this.lFileName.BackColor = System.Drawing.Color.RoyalBlue;
+            this.lFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFileName.ForeColor = System.Drawing.Color.White;
+            this.lFileName.Location = new System.Drawing.Point(8, 48);
+            this.lFileName.Name = "lFileName";
+            this.lFileName.Size = new System.Drawing.Size(154, 23);
+            this.lFileName.TabIndex = 11;
+            this.lFileName.Text = "--";
+            this.lFileName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // bSelectFile
+            // 
+            this.bSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSelectFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.bSelectFile.Location = new System.Drawing.Point(8, 17);
+            this.bSelectFile.Name = "bSelectFile";
+            this.bSelectFile.Size = new System.Drawing.Size(154, 25);
+            this.bSelectFile.TabIndex = 10;
+            this.bSelectFile.Text = "Select File";
+            this.bSelectFile.UseVisualStyleBackColor = true;
+            this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
+            // 
+            // bLoadJump
+            // 
+            this.bLoadJump.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bLoadJump.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.bLoadJump.Location = new System.Drawing.Point(6, 218);
+            this.bLoadJump.Name = "bLoadJump";
+            this.bLoadJump.Size = new System.Drawing.Size(154, 57);
+            this.bLoadJump.TabIndex = 18;
+            this.bLoadJump.Text = "Load + Jump";
+            this.bLoadJump.UseVisualStyleBackColor = true;
+            this.bLoadJump.Click += new System.EventHandler(this.bLoadJump_Click);
+            // 
+            // bLoadRun
+            // 
+            this.bLoadRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bLoadRun.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.bLoadRun.Location = new System.Drawing.Point(6, 281);
+            this.bLoadRun.Name = "bLoadRun";
+            this.bLoadRun.Size = new System.Drawing.Size(154, 57);
+            this.bLoadRun.TabIndex = 17;
+            this.bLoadRun.Text = "Load + Run";
+            this.bLoadRun.UseVisualStyleBackColor = true;
+            this.bLoadRun.Click += new System.EventHandler(this.bLoadRun_Click);
+            // 
+            // lDataSize
+            // 
+            this.lDataSize.BackColor = System.Drawing.Color.RoyalBlue;
+            this.lDataSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDataSize.ForeColor = System.Drawing.Color.White;
+            this.lDataSize.Location = new System.Drawing.Point(94, 97);
+            this.lDataSize.Name = "lDataSize";
+            this.lDataSize.Size = new System.Drawing.Size(68, 23);
+            this.lDataSize.TabIndex = 20;
+            this.lDataSize.Text = "--";
+            this.lDataSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(6, 98);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(94, 20);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Data Size:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.RoyalBlue;
-            this.ClientSize = new System.Drawing.Size(1068, 209);
+            this.ClientSize = new System.Drawing.Size(749, 400);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -359,6 +492,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -390,6 +524,16 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbIPAddress;
         private System.Windows.Forms.ComboBox cbCommonCommands;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Button bSelectFile;
+        private System.Windows.Forms.Label lFileName;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lLoadAddress;
+        private System.Windows.Forms.Button bLoadMemory;
+        private System.Windows.Forms.Button bLoadJump;
+        private System.Windows.Forms.Button bLoadRun;
+        private System.Windows.Forms.Label lDataSize;
+        private System.Windows.Forms.Label label7;
     }
 }
 

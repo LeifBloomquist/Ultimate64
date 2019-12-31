@@ -11,7 +11,7 @@ namespace Ultimate64
     // API Reference:
     // https://github.com/GideonZ/1541ultimate/blob/master/software/network/socket_dma.cc
 
-    class Ultimate64Tools
+    class Ultimate64Commands
     {
         public enum SocketCommand
         {
@@ -76,6 +76,21 @@ namespace Ultimate64
             SendCommand(config, SocketCommand.SOCKET_CMD_DMAWRITE, tosend, false);
         }
 
+        public static void WriteMemoryWithAddress(Config config, byte[] data)
+        {
+            SendCommand(config, SocketCommand.SOCKET_CMD_DMAWRITE, data, false);
+        }
+
+        public static void SendRamAndRun(Config config, byte[] binary)
+        {
+            SendCommand(config, SocketCommand.SOCKET_CMD_DMARUN, binary, false);
+        }
+
+        public static void SendRamAndJump(Config config, byte[] binary)
+        {
+            SendCommand(config, SocketCommand.SOCKET_CMD_DMAJUMP, binary, false);
+        }
+
         private static void SendCommand(Config config, SocketCommand Command)
         {
             SendCommand(config, Command, null, false);
@@ -97,15 +112,15 @@ namespace Ultimate64
             {
                 sender.Connect(hostname, port);
 
-                byte[] ram = new byte[4 + data.Length];
-                ram[0] = Utilities.GetLowByte((UInt16)Command);
-                ram[1] = Utilities.GetHighByte((UInt16)Command);
-                ram[2] = Utilities.GetLowByte((UInt16)data.Length);
-                ram[3] = Utilities.GetHighByte((UInt16)data.Length);
-                Array.Copy(data, 0, ram, 4, data.Length);
+                byte[] tosend = new byte[4 + data.Length];
+                tosend[0] = Utilities.GetLowByte((UInt16)Command);
+                tosend[1] = Utilities.GetHighByte((UInt16)Command);
+                tosend[2] = Utilities.GetLowByte((UInt16)data.Length);
+                tosend[3] = Utilities.GetHighByte((UInt16)data.Length);
+                Array.Copy(data, 0, tosend, 4, data.Length);
 
                 // Send the data through the socket.  
-                int bytesSent = sender.Send(ram);
+                int bytesSent = sender.Send(tosend);
 
                 // Wait for a reply?
                 if (WaitReply)
