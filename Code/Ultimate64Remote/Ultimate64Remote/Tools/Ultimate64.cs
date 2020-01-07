@@ -110,7 +110,21 @@ namespace Ultimate64
             // Connect the socket to the remote endpoint. Catch any errors.  
             try
             {
-                sender.Connect(hostname, port);
+                // sender.Connect(hostname, port);  Timeout controlled by OS - too long
+
+                // Connect using a timeout
+                IAsyncResult result = sender.BeginConnect(hostname, port, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(1000, true);
+
+                if (sender.Connected)
+                {
+                    sender.EndConnect(result);
+                }
+                else
+                {
+                    sender.Close();
+                    throw new ApplicationException("Failed to connect - Check IP Address.");
+                }
 
                 byte[] tosend = new byte[4 + data.Length];
                 tosend[0] = Utilities.GetLowByte((UInt16)Command);
