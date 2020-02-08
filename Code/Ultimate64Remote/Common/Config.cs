@@ -17,6 +17,12 @@ namespace Ultimate64
             Load();
         }
 
+        public Config(string host, int port)
+        {
+            this.Hostname = host;
+            this.Port = port;
+        }
+
         public void Save()
         {
             string[] lines = { Hostname, LastPath };

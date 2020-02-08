@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64Remote", "Ultimate64Remote\Ultimate64Remote.csproj", "{C95CD94D-522E-48B2-BF8A-A90DE84A442B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64RemoteGUI", "Ultimate64Remote\Ultimate64RemoteGUI.csproj", "{C95CD94D-522E-48B2-BF8A-A90DE84A442B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64RemoteCLI", "Ultimate64RemoteCLI\Ultimate64RemoteCLI.csproj", "{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C95CD94D-522E-48B2-BF8A-A90DE84A442B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C95CD94D-522E-48B2-BF8A-A90DE84A442B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C95CD94D-522E-48B2-BF8A-A90DE84A442B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

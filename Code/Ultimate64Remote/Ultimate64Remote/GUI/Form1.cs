@@ -182,14 +182,14 @@ namespace Ultimate64Test
 
         private void bSelectFile_Click(object sender, EventArgs e)
         {
-            binary = Utilities.SelectandReadBinaryFile(cfg.LastPath);
+            binary = FileUtilities.SelectandReadBinaryFile(cfg.LastPath);
 
             if (binary != null)
             {
-                cfg.LastPath = Path.GetDirectoryName(Utilities.LastPathFileName);
+                cfg.LastPath = Path.GetDirectoryName(FileUtilities.LastPathFileName);
                 cfg.Save();
 
-                lFileName.Text = Path.GetFileName(Utilities.LastPathFileName);
+                lFileName.Text = Path.GetFileName(FileUtilities.LastPathFileName);
                 lLoadAddress.Text = ((binary[1] * 256) + binary[0]).ToString();
                 lDataSize.Text = (binary.Length - 2).ToString();
             }            

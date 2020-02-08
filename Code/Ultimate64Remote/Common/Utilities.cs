@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace SchemaFactor
 {
@@ -310,7 +309,7 @@ namespace SchemaFactor
             return bytes;
         }
 
-        private static byte[] _RevBitsTable =
+        private static readonly byte[] _RevBitsTable =
         {
             0x00,0x08,0x04,0x0C,
             0x02,0x0A,0x06,0x0E,
@@ -680,75 +679,6 @@ namespace SchemaFactor
             return result;
         }
 
-        public static void UpdateTextBoxTwoDecimals(TextBox t, double value)
-        {
-            t.Text = String.Format("{0:N2}", value);
-        }
-
-        public static Color HSVtoRGB(double hue, double saturation, double value)
-        {
-            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-            double f = hue / 60 - Math.Floor(hue / 60);
-
-            value = value * 255;
-            int v = Convert.ToInt32(value);
-            int p = Convert.ToInt32(value * (1 - saturation));
-            int q = Convert.ToInt32(value * (1 - f * saturation));
-            int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
-
-            if (hi == 0)
-                return Color.FromArgb(255, v, t, p);
-            else if (hi == 1)
-                return Color.FromArgb(255, q, v, p);
-            else if (hi == 2)
-                return Color.FromArgb(255, p, v, t);
-            else if (hi == 3)
-                return Color.FromArgb(255, p, q, v);
-            else if (hi == 4)
-                return Color.FromArgb(255, t, p, v);
-            else
-                return Color.FromArgb(255, v, p, q);
-        }
-
-
-        public static Color GetHeatmapColor(uint value, uint low, uint high)
-        {
-            // Error check - Fake out high if needed
-            if (low == high)
-            {
-                high++;
-            }
-
-            int range = (int)(high - low);
-            float h = (value - low) / (float)range;
-
-            h = 1 - h;  // Invert so max is red      
-
-            Color rgb = HSVtoRGB(h * 255, 1.0f, 1.0f);
-            return rgb;
-        }
-
-        // Note that the range is bumped up to 128 to 255 - the lower half of the grayscale is too hard to see.  Especially with goggles!
-        public static Color GetGrayScaleColor(uint value, uint low, uint high)
-        {
-            // Error check
-            if (low == high)
-            {
-                high++;
-            }
-
-            int range = (int)(high - low);
-            float v = (value - low) / (float)range;
-
-            uint val = 100 + (uint)(155 * v);
-            if (val > 255) { val = 255; }
-
-            Color c = Color.FromArgb((int)val, (int)val, (int)val);  // Grayscale
-
-            return c;
-        }
-
-
         public class CircularBuffer<T> : IEnumerable<T>
         {
             private T[] _buffer;
@@ -838,34 +768,6 @@ namespace SchemaFactor
                 if (k == len) return i;
             }
             return -1;
-        }
-
-        public static string LastPathFileName { get; private set; }
-
-        public static byte[] SelectandReadBinaryFile(string path)
-        {
-            OpenFileDialog theDialog = new OpenFileDialog();
-            theDialog.Title = "Open PRG File";
-            theDialog.Filter = "PRG files|*.prg";
-            theDialog.InitialDirectory = path;
-
-            if (theDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    LastPathFileName = theDialog.FileName;
-                    return File.ReadAllBytes(theDialog.FileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using SchemaFactor;
 using System;
 using System.Net.Sockets;
-using System.Windows.Forms;
 
 namespace Ultimate64
 {
@@ -149,8 +148,7 @@ namespace Ultimate64
             }
             catch (Exception e)
             {
-                MessageBox.Show("Ultimate64: Cannot send command: " + e.Message);
-                return new byte[0];
+                throw new Exception("Ultimate64: Cannot send command: " + e.Message);               
             }
         }
 
@@ -166,8 +164,7 @@ namespace Ultimate64
             }
             catch (Exception e)
             {
-                MessageBox.Show("Ultimate64: Cannot receive reply: " + e.Message);
-                return new byte[0];
+                throw new Exception("Ultimate64: Cannot receive reply: " + e.Message);                
             }
         }
 
