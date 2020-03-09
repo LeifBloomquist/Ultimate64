@@ -1,5 +1,6 @@
 ﻿using SchemaFactor;
 using System;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace Ultimate64
@@ -56,7 +57,21 @@ namespace Ultimate64
 
         public static void SendKeyboardString(Config config, String Command)
         {
-            byte[] data =  Utilities.GetBytesInverted(Command);
+            byte[] data = Utilities.GetBytesInverted(Command);
+
+            int startIndex = 0;
+            const int count = 10;  // Max size of C64 keyboard buffer
+
+            do
+            {
+                SendString(config, data.Skip(startIndex).Take(count).ToArray());
+                startIndex += count;
+            }
+            while (startIndex < data.Length);         
+        }
+
+        private static void SendString(Config config, byte[] data)
+        {
             SendCommand(config, SocketCommand.SOCKET_CMD_KEYB, data, false);
         }
 
