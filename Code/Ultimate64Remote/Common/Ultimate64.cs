@@ -35,7 +35,7 @@ namespace Ultimate64
             SOCKET_CMD_DEBUG_REG = 0xFF76
         }
 
-        static int SOCKET_RECEIVE_TIMEOUT = 1000;
+        static int SOCKET_TIMEOUT = 1000;
 
         /**
          * Send Reset to Ultimate64.<BR>
@@ -113,7 +113,7 @@ namespace Ultimate64
 
                 // Connect using a timeout
                 IAsyncResult result = sender.BeginConnect(hostname, port, null, null);
-                bool success = result.AsyncWaitHandle.WaitOne(1000, true);
+                bool success = result.AsyncWaitHandle.WaitOne(SOCKET_TIMEOUT, true);
 
                 if (sender.Connected)
                 {
@@ -158,7 +158,7 @@ namespace Ultimate64
 
             try
             {
-                sock.ReceiveTimeout = SOCKET_RECEIVE_TIMEOUT;
+                sock.ReceiveTimeout = SOCKET_TIMEOUT;
                 buffer = ReceiveMessage(sock, buffer.Length);
                 return buffer;
             }

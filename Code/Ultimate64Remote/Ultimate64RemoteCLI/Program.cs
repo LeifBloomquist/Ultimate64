@@ -11,6 +11,12 @@ namespace Ultimate64RemoteCLI
         {
             try
             {
+                if (args.Length == 0)
+                {
+                    Usage();
+                    return;
+                }
+
                 string ip = args[0];
                 string cmd = args[1];
                 string param = "";
@@ -26,7 +32,7 @@ namespace Ultimate64RemoteCLI
                         break;
 
                     case "type":
-                        Ultimate64Commands.SendKeyboardString(config, param);
+                        Type(config, args);
                         break;
 
                     case "poke":
@@ -64,7 +70,14 @@ namespace Ultimate64RemoteCLI
         {
             Console.WriteLine();
             Console.WriteLine("Usage: u64remote.exe <ip> <command> <parameters>");
-            Console.WriteLine("Command is one of reset|type|poke|write|run|jump");           
+            Console.WriteLine();
+            Console.WriteLine("Command is one of:");
+            Console.WriteLine("   reset");
+            Console.WriteLine("   type <text>");
+            Console.WriteLine("   poke <startaddress> <byte 1> <byte 2> <byte n>");
+            Console.WriteLine("   load <filename>  (start address in file)");
+            Console.WriteLine("   run  <filename>  (loads and runs)");
+            Console.WriteLine("   jump <filename>  (loads and jumps to start address)");
         }
 
         private static void Poke(Config config, string param, string[] args)
@@ -85,7 +98,23 @@ namespace Ultimate64RemoteCLI
             {
                 Handle(e);
             }
-        } 
+        }
+
+        private static void Type(Config config, string[] args)
+        {
+            try  
+            {
+                // Combine all the arguments into a single string.
+                string[] vals = args.SubArray(2, args.Length - 2);
+                string text = String.Join(" ", vals);
+
+                Ultimate64Commands.SendKeyboardString(config, text);
+            }
+            catch (Exception e)
+            {
+                Handle(e);
+            }
+        }
 
         private static void Handle(Exception e)
         {
