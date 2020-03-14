@@ -58,7 +58,11 @@ namespace Ultimate64
         public static void SendKeyboardString(Config config, String Command)
         {
             byte[] data = Utilities.GetBytesInverted(Command);
+            SendKeyboardBytes(config, data);
+        }
 
+        public static void SendKeyboardBytes(Config config, byte[] data)
+        {
             int startIndex = 0;
             const int count = 10;  // Max size of C64 keyboard buffer
 
@@ -67,7 +71,7 @@ namespace Ultimate64
                 SendString(config, data.Skip(startIndex).Take(count).ToArray());
                 startIndex += count;
             }
-            while (startIndex < data.Length);         
+            while (startIndex < data.Length);
         }
 
         private static void SendString(Config config, byte[] data)
