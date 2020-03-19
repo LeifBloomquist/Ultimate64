@@ -18,7 +18,7 @@ Command is one of:
    reset
    type <text>
    poke <startaddress> <byte 1> <byte 2> <byte n>
-   load <filename>  (start address in file)
+   load <filename>  (uses load address in file)
    run  <filename>  (loads and runs)
    jump <filename>  (loads and jumps to start address)
 ```
