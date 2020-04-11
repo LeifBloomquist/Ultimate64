@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bReset = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tbIPAddress = new System.Windows.Forms.TextBox();
@@ -39,14 +41,14 @@
             this.bStopStream = new System.Windows.Forms.Button();
             this.lPackets = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lPPS = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pbMemory = new System.Windows.Forms.PictureBox();
             this.grid = new System.Windows.Forms.DataGridView();
-            this.Address1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lPPS = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lSequence = new System.Windows.Forms.Label();
             this.lNMI = new System.Windows.Forms.Label();
             this.lROM = new System.Windows.Forms.Label();
             this.lRW = new System.Windows.Forms.Label();
@@ -55,7 +57,7 @@
             this.lEXROM = new System.Windows.Forms.Label();
             this.lGAME = new System.Windows.Forms.Label();
             this.lPHI2 = new System.Windows.Forms.Label();
-            this.lSequence = new System.Windows.Forms.Label();
+            this.Address1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMemory)).BeginInit();
@@ -176,6 +178,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Statistics";
             // 
+            // lPPS
+            // 
+            this.lPPS.Location = new System.Drawing.Point(106, 68);
+            this.lPPS.Name = "lPPS";
+            this.lPPS.Size = new System.Drawing.Size(62, 17);
+            this.lPPS.TabIndex = 19;
+            this.lPPS.Text = "---";
+            // 
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(6, 28);
@@ -207,37 +217,29 @@
             this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Address1});
             this.grid.Location = new System.Drawing.Point(12, 12);
+            this.grid.MultiSelect = false;
             this.grid.Name = "grid";
             this.grid.ReadOnly = true;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grid.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.grid.RowHeadersVisible = false;
             this.grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grid.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.grid.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.grid.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grid.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            this.grid.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.grid.RowTemplate.Height = 16;
             this.grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.grid.Size = new System.Drawing.Size(470, 385);
             this.grid.TabIndex = 21;
-            // 
-            // Address1
-            // 
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle32.BackColor = System.Drawing.Color.Fuchsia;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle32.NullValue = null;
-            this.Address1.DefaultCellStyle = dataGridViewCellStyle32;
-            this.Address1.Frozen = true;
-            this.Address1.HeaderText = "Address";
-            this.Address1.Name = "Address1";
-            this.Address1.ReadOnly = true;
-            // 
-            // lPPS
-            // 
-            this.lPPS.Location = new System.Drawing.Point(106, 68);
-            this.lPPS.Name = "lPPS";
-            this.lPPS.Size = new System.Drawing.Size(62, 17);
-            this.lPPS.TabIndex = 19;
-            this.lPPS.Text = "---";
             // 
             // groupBox2
             // 
@@ -285,6 +287,15 @@
             this.groupBox4.TabIndex = 32;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Signals";
+            // 
+            // lSequence
+            // 
+            this.lSequence.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lSequence.Location = new System.Drawing.Point(7, 55);
+            this.lSequence.Name = "lSequence";
+            this.lSequence.Size = new System.Drawing.Size(257, 21);
+            this.lSequence.TabIndex = 38;
+            this.lSequence.Text = "---";
             // 
             // lNMI
             // 
@@ -390,14 +401,19 @@
             this.lPHI2.Text = "Φ2";
             this.lPHI2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lSequence
+            // Address1
             // 
-            this.lSequence.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lSequence.Location = new System.Drawing.Point(13, 55);
-            this.lSequence.Name = "lSequence";
-            this.lSequence.Size = new System.Drawing.Size(257, 21);
-            this.lSequence.TabIndex = 38;
-            this.lSequence.Text = "---";
+            this.Address1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Fuchsia;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.NullValue = null;
+            this.Address1.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Address1.Frozen = true;
+            this.Address1.HeaderText = "Address";
+            this.Address1.Name = "Address1";
+            this.Address1.ReadOnly = true;
+            this.Address1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // Form_Debug
             // 
@@ -445,7 +461,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pbMemory;
         private System.Windows.Forms.DataGridView grid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Address1;
         private System.Windows.Forms.Label lPPS;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -459,6 +474,7 @@
         private System.Windows.Forms.Label lGAME;
         private System.Windows.Forms.Label lPHI2;
         private System.Windows.Forms.Label lSequence;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Address1;
     }
 }
 

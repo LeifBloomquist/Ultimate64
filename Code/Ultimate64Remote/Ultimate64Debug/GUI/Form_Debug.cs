@@ -62,24 +62,30 @@ namespace Ultimate64Debug
 
         private void SetupGrid()
         {
+            DataGridViewCell cell = null;
+
+            // Columns
             grid.ColumnCount = 17;
 
             grid.Columns[0].Name = "Address";
             grid.Columns[0].Width = 50;
+            grid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             for (int col = 1; col < 17; col++)
             {
                 grid.Columns[col].Width = 25;
                 grid.Columns[col].Name = "-";
+                grid.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             }
-            grid.RowCount = 4096;
 
-            DataGridViewCell cell = null;
+            // Rows
+            grid.RowCount = 4096;            
 
             for (int row = 0; row < 4096; row++)
             {
                 grid.Rows[row].Cells[0].Value = (row * 16).ToString("X4");
                 grid.Rows[row].Cells[0].Style.BackColor = Color.LightGray;
+                grid.Rows[row].Resizable = DataGridViewTriState.False;
 
                 for (int col = 0; col < 16; col++)
                 {
@@ -119,9 +125,9 @@ namespace Ultimate64Debug
             }
 
             offset = (16 * row) + col - 1;   // -1 because of the address column
+
             red = (int)(memory[offset].writes * 200d);
             grn = (int)(memory[offset].reads * 200d);
-
             cell = grid.Rows[row].Cells[col]; 
             cell.Style.BackColor = Color.FromArgb(red, grn, 0);
 
@@ -179,8 +185,14 @@ namespace Ultimate64Debug
 
             ShowMemory(memory);
             Animate(memory);
+        }
 
-            //grid.Invalidate();  Slow!  
+        private void OnTimedEventOneSecond(Object myObject, EventArgs myEventArgs)
+        {
+            lPPS.Text = packets_per_second.ToString();
+            packets_per_second = 0;
+            //grid.Invalidate();  //Slow!  
+            //grid.Invalidate(true);
         }
 
         Color[] colors = { Color.Red, Color.Black };  // Inverted
@@ -203,13 +215,7 @@ namespace Ultimate64Debug
         {
             int vi = v ? 1 : 0;
             lbl.BackColor = colors[vi];
-        }
-
-        private void OnTimedEventOneSecond(Object myObject, EventArgs myEventArgs)
-        {
-            lPPS.Text = packets_per_second.ToString();
-            packets_per_second = 0;
-        }
+        }        
 
         // Method to listen (Separate Thread)
         public void UDPListener()
@@ -239,7 +245,7 @@ namespace Ultimate64Debug
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Ultimate64: Cannot listen for UDP: " + e.Message);
+                    Console.WriteLine("Ultimate64: Cannot listen for UDP: " + e.Message);
                 }
             }        
         }
