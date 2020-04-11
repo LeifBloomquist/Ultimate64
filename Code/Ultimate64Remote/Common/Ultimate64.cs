@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Ultimate64
 {
@@ -28,12 +29,30 @@ namespace Ultimate64
             SOCKET_CMD_MOUNT_IMG = 0xFF0A,
             SOCKET_CMD_RUN_IMG = 0xFF0B,
 
+            // Streams
+            SOCKET_CMD_ENABLE_OUTPUT_STREAM = 0xFF20,
+            SOCKET_CMD_ENABLE_OUTPUT_STREAM_VIC   = SOCKET_CMD_ENABLE_OUTPUT_STREAM | StreamID.STREAM_VIC,
+            SOCKET_CMD_ENABLE_OUTPUT_STREAM_AUDIO = SOCKET_CMD_ENABLE_OUTPUT_STREAM | StreamID.STREAM_AUDIO,
+            SOCKET_CMD_ENABLE_OUTPUT_STREAM_DEBUG = SOCKET_CMD_ENABLE_OUTPUT_STREAM | StreamID.STREAM_DEBUG,
+
+            SOCKET_CMD_DISABLE_OUTPUT_STREAM = 0xFF30,
+            SOCKET_CMD_DISABLE_OUTPUT_STREAM_VIC   = SOCKET_CMD_DISABLE_OUTPUT_STREAM | StreamID.STREAM_VIC,
+            SOCKET_CMD_DISABLE_OUTPUT_STREAM_AUDIO = SOCKET_CMD_DISABLE_OUTPUT_STREAM | StreamID.STREAM_AUDIO,
+            SOCKET_CMD_DISABLE_OUTPUT_STREAM_DEBUG = SOCKET_CMD_DISABLE_OUTPUT_STREAM | StreamID.STREAM_DEBUG,
+
             // Undocumented, shall only be used by developers.
             SOCKET_CMD_LOADSIDCRT = 0xFF71,
             SOCKET_CMD_LOADBOOTCRT = 0xFF72,
             SOCKET_CMD_READMEM = 0xFF74,
             SOCKET_CMD_READFLASH = 0xFF75,
             SOCKET_CMD_DEBUG_REG = 0xFF76
+        }
+
+        public enum StreamID
+        {
+            STREAM_VIC   = 0,
+            STREAM_AUDIO = 1,
+            STREAM_DEBUG = 2
         }
 
         static int SOCKET_TIMEOUT = 1000;
@@ -107,6 +126,25 @@ namespace Ultimate64
         public static void SendRamAndJump(Config config, byte[] binary)
         {
             SendCommand(config, SocketCommand.SOCKET_CMD_DMAJUMP, binary, false);
+        }
+
+        public static void StartStream(Config config, StreamID id, String ipaddress)
+        {
+            int cmd = (int)SocketCommand.SOCKET_CMD_ENABLE_OUTPUT_STREAM | (int)id;
+            SocketCommand scmd = (SocketCommand)cmd;
+
+            byte[] duration = { 0, 0 };   // Indefinitely
+            byte[] addr = Encoding.ASCII.GetBytes(ipaddress);
+            byte[] data = duration.Concat(addr).ToArray();
+
+            SendCommand(config, scmd, data, false);
+        }
+
+        public static void StopStream(Config config, StreamID id)
+        {
+            int cmd = (int)SocketCommand.SOCKET_CMD_DISABLE_OUTPUT_STREAM | (int)id;
+            SocketCommand scmd = (SocketCommand)cmd;
+            SendCommand(config, scmd, null, false);
         }
 
         private static void SendCommand(Config config, SocketCommand Command)

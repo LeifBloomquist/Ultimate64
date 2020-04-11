@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64RemoteGUI", "Ulti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64RemoteCLI", "Ultimate64RemoteCLI\Ultimate64RemoteCLI.csproj", "{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultimate64Debug", "Ultimate64Debug\Ultimate64Debug.csproj", "{62537EB5-04CD-4A6C-948F-8300A549B529}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECDB0FD-1128-4B94-A4BE-538BC83D23D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62537EB5-04CD-4A6C-948F-8300A549B529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62537EB5-04CD-4A6C-948F-8300A549B529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62537EB5-04CD-4A6C-948F-8300A549B529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62537EB5-04CD-4A6C-948F-8300A549B529}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
