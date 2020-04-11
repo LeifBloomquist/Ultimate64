@@ -1,6 +1,7 @@
 ﻿using SchemaFactor;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -260,6 +261,20 @@ namespace Ultimate64
             }
 
             return messageBuffer;
+        }
+
+        // This is slightly hacky, returns the IP of the interface that would be used to talk to the U64.
+        // Filters out VMWare, etc. etc
+        public static string GetLocalIP(Config config)
+        {
+            string localIP;
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            {
+                socket.Connect(config.Hostname, 64738);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                localIP = endPoint.Address.ToString();
+                return localIP;
+            }
         }
     }
 }

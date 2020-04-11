@@ -33,7 +33,6 @@ namespace Ultimate64Debug
 
         // Image to display
         static DirectBitmap bmp = new DirectBitmap(256, 256);
-        //Graphics gfx = Graphics.FromImage(bmp);
 
         // Internal Memory Map
         MemoryCell[] memory = new MemoryCell[65536];
@@ -48,7 +47,7 @@ namespace Ultimate64Debug
 
             SetupGrid();
 
-            SetTimer();
+            SetTimers();
 
             Thread t = new Thread(new ThreadStart(UDPListener));
             t.Priority = ThreadPriority.Highest;
@@ -79,7 +78,8 @@ namespace Ultimate64Debug
 
             for (int row = 0; row < 4096; row++)
             {
-                grid.Rows[row].Cells[0].Value = (row * 16).ToString("X4");               
+                grid.Rows[row].Cells[0].Value = (row * 16).ToString("X4");
+                grid.Rows[row].Cells[0].Style.BackColor = Color.LightGray;
 
                 for (int col = 0; col < 16; col++)
                 {
@@ -101,12 +101,13 @@ namespace Ultimate64Debug
             grid.CellValueNeeded += grid_CellValueNeeded;
         }
 
+        DataGridViewCell cell = null;
+
         private void grid_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             int offset = 0;
             int red;
             int grn;
-            DataGridViewCell cell = null;
 
             int row = e.RowIndex;
             int col = e.ColumnIndex;
@@ -118,8 +119,8 @@ namespace Ultimate64Debug
             }
 
             offset = (16 * row) + col - 1;   // -1 because of the address column
-            red = (int)(memory[offset].writes * 255d);
-            grn = (int)(memory[offset].reads * 255d);
+            red = (int)(memory[offset].writes * 200d);
+            grn = (int)(memory[offset].reads * 200d);
 
             cell = grid.Rows[row].Cells[col]; 
             cell.Style.BackColor = Color.FromArgb(red, grn, 0);
@@ -145,8 +146,8 @@ namespace Ultimate64Debug
 
         private void bStartStream_Click(object sender, EventArgs e)
         {
-           
-            Ultimate64Commands.StartStream(cfg, Ultimate64Commands.StreamID.STREAM_DEBUG, "192.168.7.14:" + LISTEN_PORT.ToString());
+            string local_ip = Ultimate64Commands.GetLocalIP(cfg);
+            Ultimate64Commands.StartStream(cfg, Ultimate64Commands.StreamID.STREAM_DEBUG, local_ip + ":" + LISTEN_PORT.ToString());
         }
 
         private void bStopStream_Click(object sender, EventArgs e)
@@ -154,35 +155,63 @@ namespace Ultimate64Debug
             Ultimate64Commands.StopStream(cfg, Ultimate64Commands.StreamID.STREAM_DEBUG);
         }
 
-        // Timer
-
-        private void SetTimer()
+        // Timers
+        private void SetTimers()
         {
             System.Windows.Forms.Timer aTimer = new System.Windows.Forms.Timer();            
             aTimer.Tick += OnTimedEvent; 
-            aTimer.Interval = 25;
+            aTimer.Interval = 50;
             aTimer.Start();
+
+            System.Windows.Forms.Timer bTimer = new System.Windows.Forms.Timer();
+            bTimer.Tick += OnTimedEventOneSecond;
+            bTimer.Interval = 1000;
+            bTimer.Start();
         }
 
         private void OnTimedEvent(Object myObject, EventArgs myEventArgs)
         {
             lPackets.Text = packets_received.ToString() + "\n" +
                             packets_bad.ToString() + "\n" +
-                            (packets_per_second * 20).ToString() + "\n" + 
                             packets_missed.ToString() + "\n";
 
-            packets_per_second = 0;
-
-            lSequence.Text = last_sequence.ToString();
+            lSequence.Text = "Sequence: " + last_sequence.ToString();
 
             ShowMemory(memory);
             Animate(memory);
 
-            //grid.Invalidate();
-            //grid.Update();
+            //grid.Invalidate();  Slow!  
         }
 
-        // Method to listen (Separate thread)
+        Color[] colors = { Color.Red, Color.Black };  // Inverted
+
+        private void ShowFlags(byte flags)
+        {            
+            BitArray flagbits = new BitArray(new byte[] { flags });
+
+            SetColor(lRW,    flagbits[0]);
+            SetColor(lNMI,   flagbits[1]);
+            SetColor(lROM,   flagbits[2]);
+            SetColor(lIRQ,   flagbits[3]);
+            SetColor(lBA,    flagbits[4]);
+            SetColor(lEXROM, flagbits[5]);
+            SetColor(lGAME,  flagbits[6]);
+            SetColor(lPHI2,  flagbits[7]);
+        }
+
+        private void SetColor(Label lbl, bool v)
+        {
+            int vi = v ? 1 : 0;
+            lbl.BackColor = colors[vi];
+        }
+
+        private void OnTimedEventOneSecond(Object myObject, EventArgs myEventArgs)
+        {
+            lPPS.Text = packets_per_second.ToString();
+            packets_per_second = 0;
+        }
+
+        // Method to listen (Separate Thread)
         public void UDPListener()
         {
             UdpClient listener = new UdpClient(LISTEN_PORT);
@@ -210,7 +239,7 @@ namespace Ultimate64Debug
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.ToString());
+                    throw new Exception("Ultimate64: Cannot listen for UDP: " + e.Message);
                 }
             }        
         }
@@ -232,9 +261,10 @@ namespace Ultimate64Debug
                 address = GetWord(bytes, offset);
                 data = bytes[offset + 2];
                 flags = bytes[offset + 3];
-                BitArray flagbits = new BitArray(new byte[] { flags });
 
-                if (flagbits[0])  // Read = 1, write = 0
+                bool rw = ((flags & 0x01) == 1);
+
+                if (rw)  // Read = 1, Write = 0
                 {
                     memory[address].reads = 1f;
                 }
@@ -243,7 +273,7 @@ namespace Ultimate64Debug
                     memory[address].writes = 1f;
                 }
                 memory[address].value = data;
-            } 
+            }
 
             if (last_sequence > 0)
             {
@@ -257,18 +287,8 @@ namespace Ultimate64Debug
             }
 
             last_sequence = sequence;
-        }
 
-        private void WriteTextSafe(string text)
-        {
-            try
-            {
-                lSequence.Invoke(new Action(() => lSequence.Text = text));
-            }
-            catch (Exception)
-            {
-                ;
-            }
+            lSequence.Invoke(new Action(() => ShowFlags(flags)));            
         }
 
         private void ShowMemory(MemoryCell[] memory)
@@ -295,8 +315,8 @@ namespace Ultimate64Debug
         {
             for (int offset = 0; offset < memory.Length; offset++)
             {
-                memory[offset].writes *= 0.7;
-                memory[offset].reads *= 0.7;
+                memory[offset].writes *= 0.8;
+                memory[offset].reads *= 0.8;
             }
         }
 
