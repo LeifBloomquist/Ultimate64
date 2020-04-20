@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Ultimate64;
@@ -191,8 +192,8 @@ namespace Ultimate64Debug
         {
             lPPS.Text = packets_per_second.ToString();
             packets_per_second = 0;
-            //grid.Invalidate();  //Slow!  
-            //grid.Invalidate(true);
+
+            //grid. Invalidate(false);  // Slow!       
         }
 
         Color[] colors = { Color.Red, Color.Black };  // Inverted
