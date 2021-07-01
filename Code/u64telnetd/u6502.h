@@ -1,113 +1,113 @@
 ;-------------------------------------
-; U6502.H (ULTIMATE LIB INCLUDE FILE)
+; u6502.h (ultimate lib include file)
 ;-------------------------------------
-CTRL_REG = $DF1C ;WRITE
-STA_REG  = $DF1C ;READ
-CMD_DREG = $DF1D ;WRITE
-ID_REG   = $DF1D ;READ
-RSP_DREG = $DF1E ;READ
-STA_DREG = $DF1F ;READ
+ctrl_reg = $df1c ;write
+sta_reg  = $df1c ;read
+cmd_dreg = $df1d ;write
+id_reg   = $df1d ;read
+rsp_dreg = $df1e ;read
+sta_dreg = $df1f ;read
 
-DAT_QSIZ = 896
-STA_QSIZ = 256
+dat_qsiz = 896
+sta_qsiz = 256
 
-TGT_DOS1 = 1
-TGT_DOS2 = 2
-TGT_NET  = 3
-TGT_CTRL = 4
+tgt_dos1 = 1
+tgt_dos2 = 2
+tgt_net  = 3
+tgt_ctrl = 4
 
-;STA_REG (READ)
-DAT_AVL  = $80
-STA_AVL  = $40
-STA_BITS = $30
-IDLE     = $00
-CMD_BUSY = $10
-DAT_LAST = $20
-DAT_MORE = $30
-ERR      = $08
-ABRT_PND = $04
-DATA_ACC = $02
-BUSY_CMD = $01
+;sta_reg (read)
+dat_avl  = $80
+sta_avl  = $40
+sta_bits = $30
+idle     = $00
+cmd_busy = $10
+dat_last = $20
+dat_more = $30
+err      = $08
+abrt_pnd = $04
+data_acc = $02
+busy_cmd = $01
 
-;CTRL_REG (WRITE)
-CLR_ERR  = $08
-ABRT     = $04
-ACC_DATA = $02
-PUSH_CMD = $01
+;ctrl_reg (write)
+clr_err  = $08
+abrt     = $04
+acc_data = $02
+push_cmd = $01
 
-;ÄÏÓ COMMANDS
-IDENT    = $01
-FOPEN    = $02
-FCLOSE   = $03
-FREAD    = $04
-FWRITE   = $05
-FSEEK    = $06
-FINFO    = $07
-FSTAT    = $08
-FDEL     = $09
-FREN     = $0A
-FCOPY    = $0B
-FCD      = $11
-FGETPATH = $12
-OPENDIR  = $13
-READDIR  = $14
-CPYUPATH = $15
-MKDIR    = $16
-CPYHPATH = $17
-LOADREU  = $21
-SAVEREU  = $22
-MNTDSK   = $23
-UMNTDSK  = $24
-SWAPDSK  = $25
-GETTIME  = $26
-SETTIME  = $27
-EN_DSKA  = $30
-DIS_DSKA = $31
-EN_DSKB  = $32
-DIS_DSKB = $33
-DRVA_PWR = $34
-DRVB_PWR = $35
-ECHO     = $F0
+;DOS commands
+ident    = $01
+fopen    = $02
+fclose   = $03
+fread    = $04
+fwrite   = $05
+fseek    = $06
+finfo    = $07
+fstat    = $08
+fdel     = $09
+fren     = $0a
+fcopy    = $0b
+fcd      = $11
+fgetpath = $12
+opendir  = $13
+readdir  = $14
+cpyupath = $15
+mkdir    = $16
+cpyhpath = $17
+loadreu  = $21
+savereu  = $22
+mntdsk   = $23
+umntdsk  = $24
+swapdsk  = $25
+gettime  = $26
+settime  = $27
+en_dska  = $30
+dis_dska = $31
+en_dskb  = $32
+dis_dskb = $33
+drva_pwr = $34
+drvb_pwr = $35
+echo     = $f0
 
-;NETWORK COMMANDS
-GETIFCNT = $02
-GETIPADR = $05
-TCPCONN  = $07
-UDPCONN  = $08
-SCKCLOSE = $09
-SCKREAD  = $10
-SCKWRITE = $11
-TCPLSTRT = $12
-TCPLSTOP = $13
-GETLSTAT = $14
-GETLSCK  = $15
-NOTLISN  = $00
-LISENING = $01
-CONNECTD = $02
-BINDERR  = $03
-PORTUSED = $04
+;network commands
+getifcnt = $02
+getipadr = $05
+tcpconn  = $07
+udpconn  = $08
+sckclose = $09
+sckread  = $10
+sckwrite = $11
+tcplstrt = $12
+tcplstop = $13
+getlstat = $14
+getlsck  = $15
+notlisn  = $00
+lisening = $01
+connectd = $02
+binderr  = $03
+portused = $04
 
 ;-------------------------------------
-; ÐRINT A MESSAGE. ÐASS LO/HI BYTES OF
-; MESSAGE ADDRESS AS PARAMETERS.
+; Print a message. Pass lo/hi bytes of
+; message address as parameters.
 ;-------------------------------------
-SHOWMSG  .MACRO
-         PHA
-         TYA
-         PHA
-         LDA #\1
-         STA $FD
-         LDA #\2
-         STA $FE
-         LDY #0
-SHOW     LDA ($FD),Y
-         BEQ SHOWN
-         JSR $FFD2
-         INY
-         BNE SHOW
-SHOWN    PLA
-         TAY
-         PLA
-         .ENDM
+showmsg  .macro
+         pha
+         tya
+         pha
+         lda #\1
+         sta $fd
+         lda #\2
+         sta $fe
+         ldy #0
+show     lda ($fd),y
+         beq shown
+         jsr $ffd2
+         iny
+         bne show
+shown    pla
+         tay
+         pla
+         .endm
 ;-------------------------------------
 
