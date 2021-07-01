@@ -378,6 +378,90 @@ done2    pla
          .bend
 
 ;--------------------------------------
+; Convert binary IP to dotted quad.
+; (internal use only)
+; pass: binary IP at binip
+; return: dotted quad at ipaddr
+;--------------------------------------
+bindot
+         .block
+         ldx #0
+         ldy #0
+l10      lda binip,x
+         jsr byte2asc
+         txa
+         pha
+         ldx #0
+l20      lda ascnum,x
+         beq l30
+         sta ipaddr,y
+         inx
+         iny
+         bne l20
+l30      pla
+         tax
+         inx
+         cpx #4
+         beq l40
+         lda #"."
+         sta ipaddr,y
+         iny
+         bne l10
+l40      lda #0
+         sta ipaddr,y
+         rts
+         .bend
+;--------------------------------------
+; Binary byte to decimal string.
+; (internal use only)
+; pass: byte in .A
+; return: decimal string at ascnum
+;         (.Y preserved)
+;--------------------------------------
+byte2asc
+         .block
+         sta hold
+         tya
+         pha
+         ldy #0
+         sty accum
+         lda #100
+         sta const
+l10      lda hold
+l20      cmp const
+         bcc l30
+         sec
+         sbc const
+         sta hold
+         inc accum
+         bne l20
+l30      lda accum
+         bne l35
+         cpy #0 ;no leading zeros
+         beq l37
+l35      ora #$30
+         sta ascnum,y
+         iny
+         lda #0
+         sta accum
+l37      lda const
+         cmp #10
+         beq l40 ;to one's place
+         lda #10
+         sta const
+         bne l10 ;to ten's place
+l40      lda hold
+         ora #$30
+         sta ascnum,y
+         iny
+         lda #0
+         sta ascnum,y
+         pla
+         tay
+         rts
+         .bend
+
+;--------------------------------------
 
 cmdid    .byte $02,tgt_dos1,ident
 cmdgetip .byte $03,tgt_net,getipadr,0
@@ -385,7 +469,7 @@ cmdconn  .byte 0,tgt_net
 conntype .byte 0 ;TCP or UDP
 connport .word 0
 hostname = *
-         *= *+128
+         .repeat 128,$00 ;*= *+128
 cmdsckwr .byte 3,tgt_net,sckwrite,0
 cmdsckrd .byte 5,tgt_net,sckread,0,0,0
 cmdsckcl .byte 3,tgt_net,sckclose,0
@@ -407,7 +491,13 @@ dbgrsta1 .text "readstat: "
          .text "status available"
          .byte $0d,0
 data     = *
-         *= *+(dat_qsiz*2)
+         .repeat dat_qsiz*2  ; *= *+(dat_qsiz*2)
 status   = *
-         *= *+sta_qsiz
+         .repeat sta_qsiz;*= *+sta_qsiz
 
+hold     .byte 0
+accum    .byte 0
+const    .byte 0
+binip    .byte 0,0,0,0
+ascnum   .byte 0,0,0,0
+ipaddr   *= *+16
