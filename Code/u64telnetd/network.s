@@ -1,6 +1,8 @@
 
 LISTEN_PORT=64000
 
+bufptr = $c6
+
 network_init
   
   ; 1. Detect and identify Ultimate 64
@@ -16,12 +18,6 @@ network_init
          #ldxy LISTEN_PORT
          jsr connect
          sta socket
-         lda #<msgconn
-         sta $fb
-         lda #>msgconn
-         sta $fc
-         clc
-         jsr show
          jsr showstat
          ldy #0       ;error code?
          lda ($fb),y
@@ -62,27 +58,58 @@ network_init_x
 network_poll
 
   ; TESTING - send data
-  
-  lda #1
-         sta buffer ;length
-         lda #65
-         sta buffer+1
-         #POKEWORD $fd, buffer
+  ;#POKEWORD $fd, c64_text
+  ;lda socket
+  ;jsr sockwr
 
-         lda socket
-         jsr sockwr
-		 
-         #POKEWORD $fb, msgsckwr
+  ; 1. Check for disconnect
+
+  ; 2. Poll for data
+readit   
+	lda socket
+	ldx #1 ;254
+	ldy #0
+	clc  ;sec        ;wait for data
+	jsr sockrd		 
          
-         clc
-         ;jsr show
-         ;jsr showstat
-  
+	; !!!! Debug - show packet on screen
+	ldy #$00
+loop2
+    lda data,y
+	sta $0400,y
+	iny
+	bne loop2
 
+    ; Check for 0 (connection closed)
+	lda data
+	bne still_connected
+	lda data+1
+	bne still_connected
 
-  ; 1. Poll for data
-  ; 2. Check for disconnect
+	lda #$00
+	sta connected
+	
+	lda #$02 ; !!!!
+	sta $d021
+
+still_connected
+    
+	; -1 indicates no data
+	lda data
+	cmp #$ff
+	beq network_poll_x
+
+    ; For now, a single character at a time.
+	lda data+2 ; Received byte
+	ldx bufptr
+	sta $0277,x
+	inc bufptr
+			 
+network_poll_x  
   rts
+  
+temp_border
+   .byte 0
 
 ; -----------------------------------------------
 ; Subroutines
@@ -124,34 +151,45 @@ port_text
 	.null " port "
 	
 ; -----------------------------------------------
+; Flags and Variables
+; -----------------------------------------------
+
+connected
+	.byte 0
+
+server_address
+		 .null "192.168.7.51"
+socket   .byte 0
+
+
+; -----------------------------------------------
 ; Includes
 ; -----------------------------------------------
 
   .include "u6502lib.s"
+ 
+; -----------------------------------------------
+; ASCII to PETSCII lookup table
+; ----------------------------------------------- 
+	.byte $00,$01,$02,$03,$04,$05,$06,$07,$14,$20,$0a,$11,$93,$0d,$0e,$0f
+	.byte $10,$0b,$12,$13,$08,$15,$16,$17,$18,$19,$1a,$1b,$1c,$1d,$1e,$1f
+	.byte $20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2a,$2b,$2c,$2d,$2e,$2f
+	.byte $30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e,$3f
+	.byte $40,$c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$ca,$cb,$cc,$cd,$ce,$cf
+	.byte $d0,$d1,$d2,$d3,$d4,$d5,$d6,$d7,$d8,$d9,$da,$5b,$5c,$5d,$5e,$5f
+	.byte $c0,$41,$42,$43,$44,$45,$46,$47,$48,$49,$4a,$4b,$4c,$4d,$4e,$4f
+	.byte $50,$51,$52,$53,$54,$55,$56,$57,$58,$59,$5a,$db,$dc,$dd,$de,$df
+	.byte $80,$81,$82,$83,$84,$85,$86,$87,$88,$89,$8a,$8b,$8c,$8d,$8e,$8f
+	.byte $90,$91,$92,$0c,$94,$95,$96,$97,$98,$99,$9a,$9b,$9c,$9d,$9e,$9f
+	.byte $a0,$a1,$a2,$a3,$a4,$a5,$a6,$a7,$a8,$a9,$aa,$ab,$ac,$ad,$ae,$af
+	.byte $b0,$b1,$b2,$b3,$b4,$b5,$b6,$b7,$b8,$b9,$ba,$bb,$bc,$bd,$be,$bf
+	.byte $c0,$c1,$c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$ca,$cb,$cc,$cd,$ce,$cf
+	.byte $d0,$d1,$d2,$d3,$d4,$d5,$d6,$d7,$d8,$d9,$da,$db,$dc,$dd,$de,$df
+	.byte $e0,$e1,$e2,$e3,$e4,$e5,$e6,$e7,$e8,$e9,$ea,$eb,$ec,$ed,$ee,$ef
+	.byte $f0,$f1,$f2,$f3,$f4,$f5,$f6,$f7,$f8,$f9,$fa,$fb,$fc,$fd,$fe,$ff
   
   
   
-  
-  
-  
-  ;--------------------------------------
-
-msgident .text "identify: "
-         .byte 0
-msggetip .text "getip: "
-         .byte 0
-msgconn  .text "tcpconn: "
-         .byte 0
-msgsckwr .text "sockwr: "
-         .byte 0
-msgsckrd .byte $0d
-         .text "sockrd: "
-         .byte 0
-msgsckcl .text "sockcls: "
-         .byte 0
-server_address
-		 .null "192.168.7.51"
-socket   .byte 0
 
 
 ;--------------------------------------

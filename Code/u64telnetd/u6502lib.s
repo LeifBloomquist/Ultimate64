@@ -492,7 +492,6 @@ dbgrsta1 .text "readstat: "
          .byte $0d,0
 data     .repeat dat_qsiz*2,0  ; *= *+(dat_qsiz*2)
 status   .repeat sta_qsiz,0    ; *= *+sta_qsiz
-buffer   .repeat 255,0
 hold     .byte 0
 accum    .byte 0
 const    .byte 0
