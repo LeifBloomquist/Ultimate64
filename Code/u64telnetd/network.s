@@ -30,6 +30,8 @@ network_init
 bail     jmp network_init_x
 
 connok
+	lda #$01
+	sta connected
   
   
   ;jsr connect
@@ -43,8 +45,7 @@ printip
   jsr showip
   
   #PRINTSTRING port_text
-  #PRINTWORD LISTEN_PORT
-  
+  #PRINTWORD LISTEN_PORT  
   #PRINTSTRING cr
   
 network_init_x
@@ -62,9 +63,7 @@ network_poll
   ;lda socket
   ;jsr sockwr
 
-  ; 1. Check for disconnect
-
-  ; 2. Poll for data
+  ; 1. Poll for data
 readit   
 	lda socket
 	ldx #1 ;254
@@ -73,12 +72,12 @@ readit
 	jsr sockrd		 
          
 	; !!!! Debug - show packet on screen
-	ldy #$00
-loop2
-    lda data,y
-	sta $0400,y
-	iny
-	bne loop2
+;	ldy #$00
+;loop2
+;    lda data,y
+;	sta $0400,y
+;	iny
+;	bne loop2
 
     ; Check for 0 (connection closed)
 	lda data
@@ -100,7 +99,9 @@ still_connected
 	beq network_poll_x
 
     ; For now, a single character at a time.
-	lda data+2 ; Received byte
+	ldy data+2 ; Received byte - Ready into Y for lookup table
+	lda asc2pet,y
+	
 	ldx bufptr
 	sta $0277,x
 	inc bufptr
@@ -158,9 +159,13 @@ connected
 	.byte 0
 
 server_address
-		 .null "192.168.7.51"
-socket   .byte 0
+	.null "192.168.7.51"
+		 
+socket
+   .byte 0
 
+save_border
+	.byte 0	
 
 ; -----------------------------------------------
 ; Includes
@@ -171,6 +176,7 @@ socket   .byte 0
 ; -----------------------------------------------
 ; ASCII to PETSCII lookup table
 ; ----------------------------------------------- 
+asc2pet
 	.byte $00,$01,$02,$03,$04,$05,$06,$07,$14,$20,$0a,$11,$93,$0d,$0e,$0f
 	.byte $10,$0b,$12,$13,$08,$15,$16,$17,$18,$19,$1a,$1b,$1c,$1d,$1e,$1f
 	.byte $20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2a,$2b,$2c,$2d,$2e,$2f

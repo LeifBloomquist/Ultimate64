@@ -1,7 +1,7 @@
 ; -------------------------------------------------------------------------
 ; IRQ Code
 
-RASTER_LINE=49
+RASTER_LINE=50
 
 ; -------------------------------------------------------------------------
 ; IRQ Initialization
@@ -23,6 +23,12 @@ irq_init
   lda #RASTER_LINE              ; line number to go off at
   sta $d012                     ; low byte of raster line
 
+  ; Save original vector
+  lda $0314
+  sta old_irq+1
+  lda $0315
+  sta old_irq+2
+
   ; get address of target routine
   ; put into interrupt vector
   #ldax irqtop
@@ -33,6 +39,7 @@ irq_init
 
 ; -------------------------------------------------------------------------
 ; Main IRQ Code
+; -------------------------------------------------------------------------
 
 irqtop 
   ; IRQ code starts here
@@ -44,7 +51,9 @@ irqtop
  
   
   ; Exit this interrupt. 
-  jmp $ea31          ; Exit to ROM.  Alternately, use below if we don't need ROM routines. 
+old_irq
+  jmp $FFFF
+  ;jmp $ea31          ; Exit to ROM.  Alternately, use below if we don't need ROM routines. 
   ;pla                 ; we exit interrupt entirely.
   ;tay                           
   ;pla                           
