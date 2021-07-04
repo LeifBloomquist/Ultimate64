@@ -490,14 +490,12 @@ dbgrdat1 .text "readdata: "
 dbgrsta1 .text "readstat: "
          .text "status available"
          .byte $0d,0
-data     = *
-         .repeat dat_qsiz*2  ; *= *+(dat_qsiz*2)
-status   = *
-         .repeat sta_qsiz;*= *+sta_qsiz
-
+data     .repeat dat_qsiz*2,0  ; *= *+(dat_qsiz*2)
+status   .repeat sta_qsiz,0    ; *= *+sta_qsiz
+buffer   .repeat 255,0
 hold     .byte 0
 accum    .byte 0
 const    .byte 0
 binip    .byte 0,0,0,0
 ascnum   .byte 0,0,0,0
-ipaddr   *= *+16
+ipaddr   .repeat 16,0

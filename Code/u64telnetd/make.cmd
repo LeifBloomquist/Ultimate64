@@ -3,6 +3,8 @@
 del %exename%
 tmpx -i main.s -o %exename%
 
+@echo off
+
 choice /c yn /n /m "Run on Ultimate64 Yes, No?"
 if %ERRORLEVEL% == 2 exit /b
 
