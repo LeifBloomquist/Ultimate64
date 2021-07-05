@@ -249,6 +249,8 @@ j_accept
          lda ctrl_reg
          ora #acc_data
          sta ctrl_reg
+		 rts   ; Needed for 1.37 unofficial !!!!
+		 
 readsr   lda sta_reg
          and #data_acc
          beq readsr
