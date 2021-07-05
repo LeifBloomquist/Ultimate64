@@ -1,0 +1,55 @@
+
+  ; TESTING - connect to an IP instead
+         #POKEWORD $fd, server_address
+
+         lda #tcpconn
+         #ldxy LISTEN_PORT
+         jsr connect
+         sta socket
+         jsr showstat
+         ldy #0       ;error code?
+         lda ($fb),y
+         cmp #"0"
+         bne bail
+         iny
+         lda ($fb),y
+         cmp #"0"
+         beq connok
+bail     jmp network_init_x
+
+
+
+
+
+
+
+
+
+  ; Exit this interrupt. 
+old_irq
+  jmp $FFFF
+  ;jmp $ea31          ; Exit to ROM.  Alternately, use below if we don't need ROM routines. 
+  ;pla                 ; we exit interrupt entirely.
+  ;tay                           
+  ;pla                           
+  ;tax                          
+  ;pla      
+  ;rti
+    
+	
+	
+
+  ; TESTING - send data
+  ;#POKEWORD $fd, c64_text
+  ;lda socket
+  ;jsr sockwr
+  
+  
+  
+  	; !!!! Debug - show packet on screen
+;	ldy #$00
+;loop2
+;    lda data,y
+;	sta $0400,y
+;	iny
+;	bne loop2

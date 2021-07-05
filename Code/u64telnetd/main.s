@@ -6,7 +6,10 @@
   #PRINTSTRING start_text
 
   jsr network_init
+  bcc exit   ; Error  
   jsr irq_init
+  
+exit
   rts
     
 ; -----------------------------------------------

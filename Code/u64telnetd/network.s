@@ -1,42 +1,36 @@
 
 LISTEN_PORT=64000
 
-bufptr = $c6
+bufptr = $c6  ; Characters in keyboard buffer
+
+; -----------------------------------------------
+; Initialize and check network.
+; Returns carry set on success, clear on failure.
+; -----------------------------------------------
 
 network_init
-  
-  ; 1. Detect and identify Ultimate 64
-  jsr identify  ; TODO, check for success
-  jsr showdata
-  
-  ; 2. Open listen socket
-  
-  ; TESTING - connect to an IP instead
-         #POKEWORD $fd, server_address
-
-         lda #tcpconn
-         #ldxy LISTEN_PORT
-         jsr connect
-         sta socket
-         jsr showstat
-         ldy #0       ;error code?
-         lda ($fb),y
-         cmp #"0"
-         bne bail
-         iny
-         lda ($fb),y
-         cmp #"0"
-         beq connok
-bail     jmp network_init_x
+	; 1. Detect and identify Ultimate 64
+	jsr identify  ; TODO, check for success
+	jsr showdata
+	  
+	; 2. Open listen socket
+	#ldxy LISTEN_PORT
+	jsr listen
+	jsr showstat
+	
+	ldy #0       ;error code?
+	lda ($fb),y
+	cmp #"0"
+	bne bail
+	iny
+	lda ($fb),y
+	cmp #"0"
+	beq connok
+bail 
+    clc    
+	jmp network_init_x
 
 connok
-	lda #$01
-	sta connected
-  
-  
-  ;jsr connect
-  
-  ; Check success
   
 printip  
   ; 3. Get IP address and display with port
@@ -47,6 +41,7 @@ printip
   #PRINTSTRING port_text
   #PRINTWORD LISTEN_PORT  
   #PRINTSTRING cr
+  sec
   
 network_init_x
   rts
@@ -58,12 +53,9 @@ network_init_x
 
 network_poll
 
-  ; TESTING - send data
-  ;#POKEWORD $fd, c64_text
-  ;lda socket
-  ;jsr sockwr
+  ; 1. Check connection state
 
-  ; 1. Poll for data
+  ; 2. Poll for data
 readit   
 	lda socket
 	ldx #1 ;254
@@ -71,14 +63,6 @@ readit
 	clc  ;sec        ;wait for data
 	jsr sockrd		 
          
-	; !!!! Debug - show packet on screen
-;	ldy #$00
-;loop2
-;    lda data,y
-;	sta $0400,y
-;	iny
-;	bne loop2
-
     ; Check for 0 (connection closed)
 	lda data
 	bne still_connected
