@@ -12,12 +12,15 @@ network_init
 	; 1. Detect and identify Ultimate 64
 	jsr identify  ; TODO, check for success
 	jsr showdata
-	  
-	; 2. Open listen socket
+
+    ; TESTING - connect to an IP instead, since TCP Listen not yet implemented
+	#POKEWORD $fd, server_address
+
+	lda #tcpconn
 	#ldxy LISTEN_PORT
-	jsr listen
+	jsr connect
+	sta socket
 	jsr showstat
-	
 	ldy #0       ;error code?
 	lda ($fb),y
 	cmp #"0"
@@ -26,9 +29,10 @@ network_init
 	lda ($fb),y
 	cmp #"0"
 	beq connok
-bail 
-    clc    
+bail     
+    clc
 	jmp network_init_x
+
 
 connok
   

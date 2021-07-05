@@ -19,7 +19,24 @@ bail     jmp network_init_x
 
 
 
-
+	; 2. Open listen socket
+	#ldxy LISTEN_PORT
+	jsr listen
+	jsr showstat
+	
+	ldy #0       ;error code?
+	lda ($fb),y
+	cmp #"0"
+	bne bail
+	iny
+	lda ($fb),y
+	cmp #"0"
+	beq connok
+bail 
+    clc    
+	jmp network_init_x
+	
+	
 
 
 
