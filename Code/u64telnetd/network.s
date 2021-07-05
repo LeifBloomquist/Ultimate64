@@ -120,14 +120,12 @@ newout
      ; TODO - check connection
 
     inc send_in_progress
-    inc $d021
 
     #POKEWORD $fd, buffer
     lda socket
     jsr sockwr
 
     dec send_in_progress    
-    dec $d021
 
     pla
     tay
