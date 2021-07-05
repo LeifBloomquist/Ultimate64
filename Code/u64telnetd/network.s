@@ -116,6 +116,8 @@ newout
 
     lda asave
     jsr $e716 ; chrout for screen
+    
+     ; TODO - check connection
 
     inc send_in_progress
     inc $d021
@@ -135,11 +137,8 @@ newout
 
     rts 
        
-    
-  ; TODO - check connection
-
-buffer   ; Only 1 character at a time
-    .byte $01
+buffer   
+    .byte $01   ; Only 1 character at a time
 asave
     .byte $00
   
