@@ -10,6 +10,7 @@ debug    = 0
 identify jmp j_ident
 getip    jmp j_getip
 connect  jmp j_conn
+listen   jmp j_listen
 sockwr   jmp j_sockwr
 sockrd   jmp j_sockrd
 sockcls  jmp j_sockcl
@@ -83,6 +84,27 @@ hostdone iny  ;target
          lda data ;socket no.
          rts
          .bend
+
+;--------------------------------------
+; listen (listen for connection - TCP only)
+; pass: .X/.Y port number
+; return: socket no. in .A
+;--------------------------------------
+j_listen
+         .block
+         stx listport
+         sty listport+1
+
+         ldx #<cmdlist
+         ldy #>cmdlist
+         jsr sendcmd
+         jsr readdata
+         jsr readstat
+         jsr accept
+         ;lda data ;socket no.
+         rts
+         .bend
+
 
 ;--------------------------------------
 ; sockwr (write to open socket)
@@ -465,14 +487,20 @@ l40      lda hold
 
 cmdid    .byte $02,tgt_dos1,ident
 cmdgetip .byte $03,tgt_net,getipadr,0
+
 cmdconn  .byte 0,tgt_net
 conntype .byte 0 ;TCP or UDP
 connport .word 0
-hostname = *
-         .repeat 128,$00 ;*= *+128
+hostname .repeat 128,$00 ;*= *+128
+
+cmdlist  .byte 4,tgt_net 
+listtype .byte tcplstrt ;TCP only right now
+listport .word 0
+
 cmdsckwr .byte 3,tgt_net,sckwrite,0
 cmdsckrd .byte 5,tgt_net,sckread,0,0,0
 cmdsckcl .byte 3,tgt_net,sckclose,0
+
 count    .word 0
 stats    .byte dat_avl,sta_avl,0,0,err
          .byte abrt_pnd,data_acc

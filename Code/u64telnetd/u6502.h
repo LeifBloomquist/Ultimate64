@@ -81,6 +81,7 @@ tcplstrt = $12
 tcplstop = $13
 getlstat = $14
 getlsck  = $15
+
 notlisn  = $00
 lisening = $01
 connectd = $02

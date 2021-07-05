@@ -48,17 +48,9 @@ irqtop
   dec $d020
   
   asl $d019   ; acknowledge the interrupt by clearing the VIC's interrupt flag
- 
-  
-  ; Exit this interrupt. 
+   
+  ; Exit this interrupt and jump to the original vector.
 old_irq
   jmp $FFFF
-  ;jmp $ea31          ; Exit to ROM.  Alternately, use below if we don't need ROM routines. 
-  ;pla                 ; we exit interrupt entirely.
-  ;tay                           
-  ;pla                           
-  ;tax                          
-  ;pla      
-  ;rti
     
 ; EOF!
