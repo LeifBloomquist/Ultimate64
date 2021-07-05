@@ -70,3 +70,16 @@ old_irq
 ;	sta $0400,y
 ;	iny
 ;	bne loop2
+
+
+  ; Jump to the original output vector.
+  lda asave
+old_output  
+  jmp $FFFF
+  
+  
+    ; Same for output vector
+  lda $0326
+  sta old_output+1
+  lda $0327
+  sta old_output+2

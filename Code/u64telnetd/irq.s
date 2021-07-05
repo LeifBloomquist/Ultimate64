@@ -34,6 +34,10 @@ irq_init
   #ldax irqtop
   #stax $0314
 
+  ; Same for output vector  
+  #ldax newout
+  #stax $0326
+
   cli                           ; re-enable interrupts
   rts                           ; return to caller
 
