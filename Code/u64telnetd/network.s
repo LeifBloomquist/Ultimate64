@@ -1,7 +1,7 @@
 
 LISTEN_PORT=64000
 
-bufptr = $c6  ; Characters in keyboard buffer
+bufptr = $c6  ; # Characters in keyboard buffer
 
 ; -----------------------------------------------
 ; Initialize and check network.
@@ -9,11 +9,29 @@ bufptr = $c6  ; Characters in keyboard buffer
 ; -----------------------------------------------
 
 network_init
-    ; 1. Detect and identify Ultimate 64
+    ; 1. Detect and identify Ultimate 64    
     jsr identify  ; TODO, check for success
     jsr showdata
+    
+    ; jmp testing
+    
+	; 2. Open listen socket
+	#ldxy LISTEN_PORT
+	jsr listen
+	jsr showstat
+	
+	ldy #0       ;error code?
+	lda ($fb),y
+	cmp #"0"
+	bne bail
+	iny
+	lda ($fb),y
+	cmp #"0"
+	beq connok
+    
 
-    ; TESTING - connect to an IP instead, since TCP Listen not yet implemented in U64 firmware...
+    ; 2a. TESTING ONLY - connect to an IP instead, since TCP Listen not yet implemented in U64 firmware...
+tseting
     #POKEWORD $fd, server_address
 
     lda #tcpconn

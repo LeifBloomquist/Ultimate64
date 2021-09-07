@@ -29,8 +29,8 @@ stataddr .byte <status,>status
 j_ident
          .block
          ldx #<cmdid
-         ldy #>cmdid
-         jsr sendcmd
+         ldy #>cmdid        
+         jsr sendcmd         
          jsr readdata
          jsr readstat
          jsr accept
@@ -244,7 +244,7 @@ stdone   lda #0
 ;--------------------------------------
 ; accept (signal acceptance of data)
 ;--------------------------------------
-j_accept
+j_accept        
          .block
          lda ctrl_reg
          ora #acc_data
@@ -282,7 +282,7 @@ readsr
          sty $fc
          ldy #0
          lda ($fb),y
-         tax ;number of bytes to send
+         tax ;number of bytes to send         
 wrcmd    iny
          lda ($fb),y
          sta cmd_dreg
@@ -294,7 +294,7 @@ wrcmd    iny
          bne cmddone
          ldy #0
          lda ($fd),y ;no. bytes to send
-         tax
+         tax             
          iny
 snddata  lda ($fd),y ;write socket data
          sta cmd_dreg
