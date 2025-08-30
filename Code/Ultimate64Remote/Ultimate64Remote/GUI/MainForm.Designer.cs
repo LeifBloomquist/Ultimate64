@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.bReset = new System.Windows.Forms.Button();
             this.tbKeyboardZone = new System.Windows.Forms.TextBox();
             this.bSendString = new System.Windows.Forms.Button();
@@ -80,7 +81,7 @@
             this.bReset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bReset.Name = "bReset";
             this.bReset.Size = new System.Drawing.Size(231, 88);
-            this.bReset.TabIndex = 0;
+            this.bReset.TabIndex = 13;
             this.bReset.Text = "Send Reset";
             this.bReset.UseVisualStyleBackColor = true;
             this.bReset.Click += new System.EventHandler(this.bReset_Click);
@@ -91,7 +92,8 @@
             this.tbKeyboardZone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbKeyboardZone.Name = "tbKeyboardZone";
             this.tbKeyboardZone.Size = new System.Drawing.Size(34, 26);
-            this.tbKeyboardZone.TabIndex = 1;
+            this.tbKeyboardZone.TabIndex = 100;
+            this.tbKeyboardZone.TabStop = false;
             this.tbKeyboardZone.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyDown);
             this.tbKeyboardZone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbKeyboardZone_KeyPress);
             this.tbKeyboardZone.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyUp);
@@ -105,7 +107,7 @@
             this.bSendString.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bSendString.Name = "bSendString";
             this.bSendString.Size = new System.Drawing.Size(231, 88);
-            this.bSendString.TabIndex = 2;
+            this.bSendString.TabIndex = 8;
             this.bSendString.Text = "Send String";
             this.bSendString.UseVisualStyleBackColor = true;
             this.bSendString.Click += new System.EventHandler(this.bSendString_Click);
@@ -119,7 +121,8 @@
             this.bReadMemory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bReadMemory.Name = "bReadMemory";
             this.bReadMemory.Size = new System.Drawing.Size(231, 88);
-            this.bReadMemory.TabIndex = 3;
+            this.bReadMemory.TabIndex = 101;
+            this.bReadMemory.TabStop = false;
             this.bReadMemory.Text = "Dump Memory";
             this.bReadMemory.UseVisualStyleBackColor = true;
             this.bReadMemory.Click += new System.EventHandler(this.bReadMemory_Click);
@@ -132,7 +135,7 @@
             this.bWriteMemory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bWriteMemory.Name = "bWriteMemory";
             this.bWriteMemory.Size = new System.Drawing.Size(231, 88);
-            this.bWriteMemory.TabIndex = 4;
+            this.bWriteMemory.TabIndex = 11;
             this.bWriteMemory.Text = "Write Memory";
             this.bWriteMemory.UseVisualStyleBackColor = true;
             this.bWriteMemory.Click += new System.EventHandler(this.bWriteMemory_Click);
@@ -159,7 +162,7 @@
             this.cbConfirmReset.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbConfirmReset.Name = "cbConfirmReset";
             this.cbConfirmReset.Size = new System.Drawing.Size(231, 37);
-            this.cbConfirmReset.TabIndex = 6;
+            this.cbConfirmReset.TabIndex = 12;
             this.cbConfirmReset.Text = "Confirm Before Reset";
             this.cbConfirmReset.UseVisualStyleBackColor = true;
             // 
@@ -217,7 +220,7 @@
             this.cbCommonCommands.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbCommonCommands.Name = "cbCommonCommands";
             this.cbCommonCommands.Size = new System.Drawing.Size(229, 28);
-            this.cbCommonCommands.TabIndex = 10;
+            this.cbCommonCommands.TabIndex = 7;
             this.cbCommonCommands.SelectedIndexChanged += new System.EventHandler(this.cbCommonCommands_SelectedIndexChanged);
             // 
             // cbAppendReturn
@@ -228,7 +231,7 @@
             this.cbAppendReturn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbAppendReturn.Name = "cbAppendReturn";
             this.cbAppendReturn.Size = new System.Drawing.Size(231, 37);
-            this.cbAppendReturn.TabIndex = 9;
+            this.cbAppendReturn.TabIndex = 6;
             this.cbAppendReturn.Text = "Append RETURN";
             this.cbAppendReturn.UseVisualStyleBackColor = true;
             // 
@@ -239,7 +242,7 @@
             this.tbCommand.MaxLength = 10;
             this.tbCommand.Name = "tbCommand";
             this.tbCommand.Size = new System.Drawing.Size(229, 26);
-            this.tbCommand.TabIndex = 3;
+            this.tbCommand.TabIndex = 5;
             // 
             // groupBox4
             // 
@@ -301,7 +304,7 @@
             this.tbValues.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbValues.Name = "tbValues";
             this.tbValues.Size = new System.Drawing.Size(229, 26);
-            this.tbValues.TabIndex = 3;
+            this.tbValues.TabIndex = 10;
             this.tbValues.Text = "0";
             // 
             // groupBox5
@@ -339,7 +342,7 @@
             this.tbIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbIPAddress.Name = "tbIPAddress";
             this.tbIPAddress.Size = new System.Drawing.Size(190, 26);
-            this.tbIPAddress.TabIndex = 8;
+            this.tbIPAddress.TabIndex = 14;
             this.tbIPAddress.Text = "---";
             // 
             // label4
@@ -359,7 +362,7 @@
             this.bSaveConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bSaveConfig.Name = "bSaveConfig";
             this.bSaveConfig.Size = new System.Drawing.Size(231, 88);
-            this.bSaveConfig.TabIndex = 2;
+            this.bSaveConfig.TabIndex = 15;
             this.bSaveConfig.Text = "Apply+Save";
             this.bSaveConfig.UseVisualStyleBackColor = true;
             this.bSaveConfig.Click += new System.EventHandler(this.bSaveConfig_Click);
@@ -426,7 +429,7 @@
             this.bLoadJump.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bLoadJump.Name = "bLoadJump";
             this.bLoadJump.Size = new System.Drawing.Size(231, 88);
-            this.bLoadJump.TabIndex = 18;
+            this.bLoadJump.TabIndex = 3;
             this.bLoadJump.Text = "Load + Jump";
             this.bLoadJump.UseVisualStyleBackColor = true;
             this.bLoadJump.Click += new System.EventHandler(this.bLoadJump_Click);
@@ -439,7 +442,7 @@
             this.bLoadRun.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bLoadRun.Name = "bLoadRun";
             this.bLoadRun.Size = new System.Drawing.Size(231, 88);
-            this.bLoadRun.TabIndex = 17;
+            this.bLoadRun.TabIndex = 4;
             this.bLoadRun.Text = "Load + Run";
             this.bLoadRun.UseVisualStyleBackColor = true;
             this.bLoadRun.Click += new System.EventHandler(this.bLoadRun_Click);
@@ -452,7 +455,7 @@
             this.bLoadMemory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bLoadMemory.Name = "bLoadMemory";
             this.bLoadMemory.Size = new System.Drawing.Size(231, 88);
-            this.bLoadMemory.TabIndex = 15;
+            this.bLoadMemory.TabIndex = 2;
             this.bLoadMemory.Text = "Load";
             this.bLoadMemory.UseVisualStyleBackColor = true;
             this.bLoadMemory.Click += new System.EventHandler(this.bLoadMemory_Click);
@@ -501,7 +504,7 @@
             this.bSelectFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bSelectFile.Name = "bSelectFile";
             this.bSelectFile.Size = new System.Drawing.Size(231, 38);
-            this.bSelectFile.TabIndex = 10;
+            this.bSelectFile.TabIndex = 1;
             this.bSelectFile.Text = "Select File";
             this.bSelectFile.UseVisualStyleBackColor = true;
             this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
@@ -521,6 +524,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

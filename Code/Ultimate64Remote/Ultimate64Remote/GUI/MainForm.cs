@@ -1,5 +1,4 @@
-﻿using SchemaFactor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -167,6 +166,7 @@ namespace Ultimate64Test
 
                 case Keys.Tab:
                     commKeyPressed = true;
+                    e.SuppressKeyPress = true;  // Disables the error beep
                     return;
 
                 default:
