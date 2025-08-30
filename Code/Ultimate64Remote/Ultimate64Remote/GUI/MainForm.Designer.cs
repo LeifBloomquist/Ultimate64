@@ -94,6 +94,7 @@
             this.tbKeyboardZone.Size = new System.Drawing.Size(34, 26);
             this.tbKeyboardZone.TabIndex = 100;
             this.tbKeyboardZone.TabStop = false;
+            this.tbKeyboardZone.Enter += new System.EventHandler(this.tbKeyboardZone_Enter);
             this.tbKeyboardZone.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyDown);
             this.tbKeyboardZone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbKeyboardZone_KeyPress);
             this.tbKeyboardZone.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyUp);
@@ -294,9 +295,9 @@
             this.label2.Location = new System.Drawing.Point(12, 31);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 35);
+            this.label2.Size = new System.Drawing.Size(121, 35);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Address:";
+            this.label2.Text = "Start Address:";
             // 
             // tbValues
             // 
@@ -511,6 +512,7 @@
             // 
             // MainForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.RoyalBlue;
@@ -529,7 +531,10 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Ultimate 64 Remote Commander v1.01";
+            this.Text = "Ultimate 64 Remote Commander v1.02";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

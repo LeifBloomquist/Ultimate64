@@ -24,6 +24,11 @@ namespace Ultimate64Test
             tbIPAddress.Text = cfg.Hostname;
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+           
+        }
+
         private void bReset_Click(object sender, EventArgs e)
         {
             if (cbConfirmReset.Checked)
@@ -330,6 +335,55 @@ namespace Ultimate64Test
             if (binary == null) return;
 
             Ultimate64Commands.SendRamAndJump(cfg, binary);
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (files.Length == 1)
+                {
+                    if (files[0].ToLower().EndsWith(".prg"))
+                    {
+                        e.Effect = DragDropEffects.Copy;
+                        return;
+                    }
+                }                   
+            }           
+
+            e.Effect = DragDropEffects.None;
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length == 1)
+            {
+                binary = File.ReadAllBytes(files[0]);
+
+                lFileName.Text = Path.GetFileName(files[0]);
+                lLoadAddress.Text = ((binary[1] * 256) + binary[0]).ToString();
+                lDataSize.Text = (binary.Length - 2).ToString();
+
+                Ultimate64Commands.SendRamAndRun(cfg, binary);
+            }
+            else
+            {
+                // Do nothing
+            }
+        }
+
+        private void tbKeyboardZone_Enter(object sender, EventArgs e)
+        {
+            TextBox TB = (TextBox)sender;
+            int VisibleTime = 30000;  //in milliseconds
+
+            ToolTip tt = new ToolTip();
+            tt.Show("Tab can be used in place of Commodore Key\nF9 and F10 can be used to change upper/lower character case", TB, 5, -60, VisibleTime);
+
+            tt.IsBalloon = true;
         }
     }
 }
