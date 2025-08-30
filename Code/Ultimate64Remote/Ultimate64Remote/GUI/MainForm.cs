@@ -8,6 +8,14 @@ namespace Ultimate64Test
 {
     public partial class MainForm : Form
     {
+        // Is the simulated Commmodore key pressed?  (currently mapped to Tab)
+        private bool commKeyPressed = false;
+
+        // Lookup tables for various control characters
+        private readonly byte[] ctrl_num_keys = { 146, 144, 5, 28, 159, 156, 30, 31, 158, 18 };
+        private readonly byte[] commodore_num_keys = { 129, 149, 150, 151, 152, 153, 154, 155, 41 };
+        private readonly byte[] commodore_letter_keys = { 176, 191, 188, 172, 177, 187, 165, 180, 162, 181, 161, 182, 167, 170, 185, 175, 171, 178, 174, 163, 184, 190, 179, 189, 183, 173 };
+
         Config cfg = new Config();
 
         public MainForm()
@@ -164,6 +172,24 @@ namespace Ultimate64Test
                     key = 0x8E;    // Lower Charset
                     break;
 
+                // Special handling for CTRL-0-9, for colors
+                case Keys.D0:
+                case Keys.D1:
+                case Keys.D2:
+                case Keys.D3:
+                case Keys.D4:
+                case Keys.D5:
+                case Keys.D6:
+                case Keys.D7:
+                case Keys.D8:
+                case Keys.D9:
+                    if (e.Control)   
+                    {
+                        int index = e.KeyValue - '0';
+                        key = ctrl_num_keys[index];
+                    }
+                    break;
+
                 case Keys.Tab:
                     commKeyPressed = true;
                     e.SuppressKeyPress = true;  // Disables the error beep
@@ -181,11 +207,6 @@ namespace Ultimate64Test
 
         // Special handling for Tab, which we use as the Commodore key --------------------------------------------
 
-        bool commKeyPressed = false;
-
-        byte[] c_num_keys = { 129, 149, 150, 151, 152, 153, 154, 155, 41 };
-        byte[] c_letter_keys = { 176, 191, 188, 172, 177, 187, 165, 180, 162, 181, 161, 182, 167, 170, 185, 175, 171, 178, 174, 163, 184, 190, 179, 189, 183, 173 };
-
         private bool HandleCommodoreKey(char c)
         {
             byte key = (byte)c;
@@ -195,14 +216,14 @@ namespace Ultimate64Test
             // Letters
             if ((key >= 'a') && (key <= 'z'))
             {
-                key = c_letter_keys[key - 'a'];
+                key = commodore_letter_keys[key - 'a'];
                 handled = true;
             }
 
             // Numbers.  Note 0 is not modified by C=
             if ((key >= '1') && (c <= '9'))
             {
-                key = c_num_keys[key - '1'];
+                key = commodore_num_keys[key - '1'];
                 handled = true;
             }
 
