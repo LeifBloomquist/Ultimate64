@@ -68,10 +68,10 @@ namespace Ultimate64
             SendCommand(config, SocketCommand.SOCKET_CMD_RESET);
         }
 
-        public static void SendKeyboardKey(Config config, char key)
+        public static void SendKeyboardKey(Config config, byte key)
         {
             byte[] data = new byte[1];
-            data[0] = (byte)key;
+            data[0] = key;
             SendCommand(config, SocketCommand.SOCKET_CMD_KEYB, data, false);
         }
 

@@ -94,6 +94,8 @@
             this.tbKeyboardZone.TabIndex = 1;
             this.tbKeyboardZone.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyDown);
             this.tbKeyboardZone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbKeyboardZone_KeyPress);
+            this.tbKeyboardZone.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbKeyboardZone_KeyUp);
+            this.tbKeyboardZone.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.tbKeyboardZone_PreviewKeyDown);
             // 
             // bSendString
             // 
