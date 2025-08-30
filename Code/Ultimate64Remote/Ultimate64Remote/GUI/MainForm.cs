@@ -146,7 +146,7 @@ namespace Ultimate64Test
         private void bReadMemory_Click(object sender, EventArgs e)
         {
             byte[] buffer = Ultimate64Commands.ReadMemory(cfg);
-            File.WriteAllBytes("c:\\Leif\\u64mem.bin", buffer);    // Not sure what this file actually is??  TODO, prompt for filename and make it a config item
+            File.WriteAllBytes(@"c:\ultimate64mem.bin", buffer);    // Not sure what this file actually is??  TODO, prompt for filename and make it a config item
             MessageBox.Show("Memory Dump Complete!");
         }
 
